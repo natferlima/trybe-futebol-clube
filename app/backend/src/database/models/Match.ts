@@ -4,11 +4,16 @@ import Club from './Club';
 
 class Match extends Model {
   id!: number;
-  home_team!: number;
-  home_team_goals!: number;
-  away_team!: number;
-  away_team_goals!: number;
-  in_progress!: number;
+
+  homeTeam!: number;
+
+  homeTeamGoals!: number;
+
+  awayTeam!: number;
+
+  awayTeamGoals!: number;
+
+  inProgress!: number;
 }
 
 Match.init({
@@ -16,29 +21,34 @@ Match.init({
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
   },
-  home_team: {
+  homeTeam: {
+    field: 'home_team',
     allowNull: false,
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
   },
-  home_team_goals: {
+  homeTeamGoals: {
+    field: 'home_team_goals',
     allowNull: false,
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
   },
-  away_team: {
+  awayTeam: {
+    field: 'away_team',
     allowNull: false,
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
   },
-  away_team_goals: {
+  awayTeamGoals: {
+    field: 'away_team_goals',
     allowNull: false,
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
   },
-  in_progress: {
+  inProgress: {
+    field: 'in_progress',
     allowNull: false,
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
   },
-  
+
 }, {
 
   underscored: true,

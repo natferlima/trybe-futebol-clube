@@ -3,7 +3,8 @@ import db from '.';
 
 class Club extends Model {
   id!: number;
-  club_name!: string;
+
+  clubName!: string;
 }
 
 Club.init({
@@ -11,12 +12,13 @@ Club.init({
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
   },
-  club_name: {
+  clubName: {
+    field: 'club_name',
     allowNull: false,
-    type: DataTypes.STRING
-  }
+    type: DataTypes.STRING,
+  },
 }, {
 
   underscored: true,
