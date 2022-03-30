@@ -1,4 +1,5 @@
 import * as express from 'express';
+import loginRoute from './routers/loginRoute';
 
 class App {
   public app: express.Express;
@@ -19,6 +20,8 @@ class App {
     };
 
     this.app.use(accessControl);
+    this.app.use(express.json());
+    this.app.use(loginRoute);
     // ...
   }
 
