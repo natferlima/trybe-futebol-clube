@@ -11,4 +11,9 @@ loginRoute.post(
   LoginController.login,
 );
 
+loginRoute.get(
+  '/login/validate',
+  LoginController.loginValidate,
+);
+
 export default loginRoute;

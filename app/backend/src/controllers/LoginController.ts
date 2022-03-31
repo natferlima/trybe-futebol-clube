@@ -7,4 +7,12 @@ export default class LoginController {
     const result = await LoginService.login({ email, password });
     return res.status(200).json(result);
   }
+
+  public static async loginValidate(req: Request, res: Response) {
+    const { authorization } = req.headers;
+    if (authorization) {
+      const result = await LoginService.loginValidate(authorization);
+      res.status(200).send(result);
+    }
+  }
 }
