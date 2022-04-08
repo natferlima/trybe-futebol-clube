@@ -12,7 +12,13 @@ export default class LoginService {
       algorithm: 'HS256',
       expiresIn: '10d',
     });
-    return { user, token };
+    const userLogin = {
+      id: user?.id,
+      username: user?.username,
+      role: user?.role,
+      email: user?.email,
+    };
+    return { user: userLogin, token };
   }
 
   static async loginValidate(token: string) {
