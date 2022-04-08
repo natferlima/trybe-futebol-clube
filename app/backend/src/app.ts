@@ -24,14 +24,14 @@ class App {
     this.app.use(accessControl);
     this.app.use(express.json());
     this.app.use(cors());
-    this.app.use(loginRoute);
-    this.app.use(clubRoute);
     // ...
   }
 
   // ...
   public start(PORT: string | number):void {
     // ...
+    this.app.use(loginRoute);
+    this.app.use(clubRoute);
     this.app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));
   }
 }

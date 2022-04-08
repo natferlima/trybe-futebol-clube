@@ -9,10 +9,11 @@ export default class LoginController {
   }
 
   public static async loginValidate(req: Request, res: Response) {
-    const { authorization } = req.headers;
-    if (authorization) {
-      const result = await LoginService.loginValidate(authorization);
-      res.status(200).send(result);
+    const token = req.headers.authorization;
+    if (token) {
+      const result = await LoginService.loginValidate(token);
+      console.log(result);
+      res.status(200).json(result);
     }
   }
 }

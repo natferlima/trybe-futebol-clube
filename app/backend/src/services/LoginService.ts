@@ -15,9 +15,9 @@ export default class LoginService {
     return { user, token };
   }
 
-  static async loginValidate(authorization: string) {
+  static async loginValidate(token: string) {
     const secret = await fs.readFile('jwt.evaluation.key', 'utf-8');
-    const { email } = jwt.verify(authorization, secret) as TokenPayload;
+    const { email } = jwt.verify(token, secret) as TokenPayload;
     const user = await UserService.findByEmail(email);
     const result = user?.role;
     return result;
