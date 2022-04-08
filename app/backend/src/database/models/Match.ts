@@ -3,17 +3,17 @@ import db from '.';
 import Club from './Club';
 
 class Match extends Model {
-  id!: number;
+  id: number;
 
-  homeTeam!: number;
+  homeTeam: number;
 
-  homeTeamGoals!: number;
+  homeTeamGoals: number;
 
-  awayTeam!: number;
+  awayTeam: number;
 
-  awayTeamGoals!: number;
+  awayTeamGoals: number;
 
-  inProgress!: number;
+  inProgress: number;
 }
 
 Match.init({
@@ -58,7 +58,10 @@ Match.init({
   timestamps: false,
 });
 
-Match.hasMany(Club, { foreignKey: 'home_team', as: 'home_teamForeignKey' });
-Match.hasMany(Club, { foreignKey: 'away_team', as: 'away_teamForeignKey' });
+Match.belongsTo(Club, { foreignKey: 'home_team', as: 'homeClub' });
+Match.belongsTo(Club, { foreignKey: 'away_team', as: 'awayClub' });
+
+Club.hasMany(Match, { foreignKey: 'home_team', as: 'matchHome' });
+Club.hasMany(Match, { foreignKey: 'away_team', as: 'matchAway' });
 
 export default Match;

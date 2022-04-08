@@ -2,15 +2,15 @@ import { DataTypes, Model } from 'sequelize';
 import db from '.';
 
 class User extends Model {
-  id!: number;
+  id: number;
 
-  username!: string;
+  username: string;
 
-  role!: string;
+  role: string;
 
-  email!: string;
+  email: string;
 
-  password!: string;
+  password: string;
 }
 
 User.init({
