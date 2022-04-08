@@ -8,6 +8,7 @@ loginRoute.post(
   '/login',
   LoginValidate.fildsValidate,
   LoginValidate.emailAndPassValidate,
+  LoginValidate.userExists,
   LoginController.login,
 );
 

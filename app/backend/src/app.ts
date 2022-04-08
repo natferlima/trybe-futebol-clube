@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as cors from 'cors';
-import clubRoute from './routers/clubRoute';
-import loginRoute from './routers/loginRoute';
+import clubRoute from './routes/clubRoute';
+import loginRoute from './routes/loginRoute';
 
 class App {
   public app: express.Express;
@@ -10,6 +10,12 @@ class App {
     // ...
     this.app = express();
     this.config();
+
+    this.app.use(express.json());
+    this.app.use(cors());
+
+    this.app.use(loginRoute);
+    this.app.use(clubRoute);
     // ...
   }
 
@@ -22,16 +28,14 @@ class App {
     };
 
     this.app.use(accessControl);
-    this.app.use(express.json());
-    this.app.use(cors());
+
     // ...
   }
 
   // ...
   public start(PORT: string | number):void {
     // ...
-    this.app.use(loginRoute);
-    this.app.use(clubRoute);
+
     this.app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));
   }
 }

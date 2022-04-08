@@ -12,7 +12,6 @@ export default class LoginController {
     const token = req.headers.authorization;
     if (token) {
       const result = await LoginService.loginValidate(token);
-      console.log(result);
       res.status(200).json(result);
     }
   }

@@ -8,9 +8,9 @@ export default class LoginService {
   static async login(loginParams: IParamsLogin) {
     const user = await UserService.findByEmail(loginParams.email);
     const secret = await fs.readFile('jwt.evaluation.key', 'utf-8');
-    const token = jwt.sign({ loginParams }, secret, {
+    const token = jwt.sign({ email: loginParams.email, password: loginParams.password }, secret, {
       algorithm: 'HS256',
-      expiresIn: '1d',
+      expiresIn: '10d',
     });
     return { user, token };
   }
@@ -19,7 +19,6 @@ export default class LoginService {
     const secret = await fs.readFile('jwt.evaluation.key', 'utf-8');
     const { email } = jwt.verify(token, secret) as TokenPayload;
     const user = await UserService.findByEmail(email);
-    const result = user?.role;
-    return result;
+    return user?.role;
   }
 }
