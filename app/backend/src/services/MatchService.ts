@@ -38,8 +38,8 @@ export default class ClubService {
       return {
         id,
         homeTeam: newMatch.homeTeam,
-        homeTeamGoals: newMatch.homeTeamGoals,
         awayTeam: newMatch.awayTeam,
+        homeTeamGoals: newMatch.homeTeamGoals,
         awayTeamGoals: newMatch.awayTeamGoals,
         inProgress: newMatch.inProgress,
       };
