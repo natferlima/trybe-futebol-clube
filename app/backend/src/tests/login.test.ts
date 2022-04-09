@@ -1,17 +1,17 @@
-import * as sinon from 'sinon';
-import * as chai from 'chai';
-import chaiHttp = require('chai-http');
+// import * as sinon from 'sinon';
+// import * as chai from 'chai';
+// import chaiHttp = require('chai-http');
 
-import { app } from '../app';
-import Example from '../database/models/ExampleModel';
+// import { app } from '../app';
+// import Example from '../database/models/ExampleModel';
 
-import { Response } from 'superagent';
-import User from '../database/models/User';
-import user from './mocks/user';
+// import { Response } from 'superagent';
+// import User from '../database/models/User';
+// import user from './mocks/user';
 
-chai.use(chaiHttp);
+// chai.use(chaiHttp);
 
-const { expect } = chai;
+// const { expect } = chai;
 
 // describe('Testa a rota post /login', () => {
 //   /**

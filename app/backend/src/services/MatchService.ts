@@ -1,3 +1,4 @@
+import { NewMatch } from '../interfaces/match';
 import Match from '../database/models/Match';
 import Club from '../database/models/Club';
 
@@ -29,5 +30,19 @@ export default class ClubService {
       },
     });
     return result;
+  }
+
+  static async create(newMatch: NewMatch) {
+    const { id } = await Match.create(newMatch);
+    if (id) {
+      return {
+        id,
+        homeTeam: newMatch.homeTeam,
+        homeTeamGoals: newMatch.homeTeamGoals,
+        awayTeam: newMatch.awayTeam,
+        awayTeamGoals: newMatch.awayTeamGoals,
+        inProgress: newMatch.inProgress,
+      };
+    }
   }
 }
