@@ -8,4 +8,14 @@ leaderboardRoute.get(
   LeaderboardController.leaderboard,
 );
 
+leaderboardRoute.get(
+  '/leaderboard/away',
+  LeaderboardController.leaderboard,
+);
+
+leaderboardRoute.get(
+  '/leaderboard',
+  LeaderboardController.leaderboard,
+);
+
 export default leaderboardRoute;
