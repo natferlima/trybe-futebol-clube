@@ -24,4 +24,10 @@ matchRoute.patch(
   MatchController.updateInProgressToFinish,
 );
 
+matchRoute.patch(
+  '/matchs/:id',
+  MatchValidate.verifyMatchExists,
+  MatchController.updateMatchInProgress,
+);
+
 export default matchRoute;

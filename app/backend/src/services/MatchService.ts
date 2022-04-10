@@ -51,4 +51,13 @@ export default class ClubService {
     const result = await Match.findByPk(id);
     return result;
   }
+
+  static async updateMatchInProgress(id: string, homeTeamGoals: number, awayTeamGoals: number) {
+    await Match.update(
+      { homeTeamGoals, awayTeamGoals },
+      { where: { id } },
+    );
+    const result = await Match.findByPk(id);
+    return result;
+  }
 }
