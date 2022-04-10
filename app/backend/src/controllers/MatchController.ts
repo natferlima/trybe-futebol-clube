@@ -24,6 +24,12 @@ export default class MatchController {
       homeTeamGoals,
       awayTeamGoals,
       inProgress });
+    return res.status(201).json(result);
+  }
+
+  public static async updateInProgressToFinish(req: Request, res: Response) {
+    const { id } = req.params;
+    const result = await MatchService.updateInProgressToFinish(id);
     return res.status(200).json(result);
   }
 }

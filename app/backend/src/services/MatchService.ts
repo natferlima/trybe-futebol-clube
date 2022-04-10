@@ -45,4 +45,10 @@ export default class ClubService {
       };
     }
   }
+
+  static async updateInProgressToFinish(id: string) {
+    await Match.update({ inProgress: false }, { where: { id } });
+    const result = await Match.findByPk(id);
+    return result;
+  }
 }
