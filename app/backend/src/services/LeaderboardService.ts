@@ -4,9 +4,22 @@ import ClubService from './ClubService';
 import MatchService from './MatchService';
 
 export default class LeaderboardService {
-  static async totalPoints(idClub: number, allMatchs: Match[], routeType: string) {
+  static totalPointDraws(idClub: number, match: Match, routeType: string) {
     let points = 0;
-    allMatchs.forEach((match) => {
+    if (match.homeTeam === idClub && match.homeTeamGoals === match.awayTeamGoals
+      && (routeType === 'home' || routeType === 'home&away')) {
+      points += 1;
+    }
+    if (match.awayTeam === idClub && match.homeTeamGoals === match.awayTeamGoals
+      && (routeType === 'away' || routeType === 'home&away')) {
+      points += 1;
+    }
+    return points;
+  }
+
+  static totalPoints(idClub: number, allMatchs: Match[], routeType: string) {
+    let points = 0;
+    allMatchs.forEach(async (match) => {
       if (match.homeTeam === idClub && match.homeTeamGoals > match.awayTeamGoals
         && (routeType === 'home' || routeType === 'home&away')) {
         points += 3;
@@ -15,15 +28,12 @@ export default class LeaderboardService {
         && (routeType === 'away' || routeType === 'home&away')) {
         points += 3;
       }
-      if ((match.homeTeam === idClub || match.awayTeam === idClub)
-      && match.homeTeamGoals === match.awayTeamGoals) {
-        points += 1;
-      }
+      points += this.totalPointDraws(idClub, match, routeType);
     });
     return points;
   }
 
-  static async totalGames(idClub: number, allMatchs: Match[], routeType: string) {
+  static totalGames(idClub: number, allMatchs: Match[], routeType: string) {
     let result = 0;
     allMatchs.forEach((match) => {
       if (match.homeTeam === idClub && (routeType === 'home' || routeType === 'home&away')) {
@@ -36,7 +46,7 @@ export default class LeaderboardService {
     return result;
   }
 
-  static async totalVictories(idClub: number, allMatchs: Match[], routeType: string) {
+  static totalVictories(idClub: number, allMatchs: Match[], routeType: string) {
     let victories = 0;
     allMatchs.forEach((match) => {
       if (match.homeTeam === idClub && match.homeTeamGoals > match.awayTeamGoals
@@ -51,7 +61,7 @@ export default class LeaderboardService {
     return victories;
   }
 
-  static async totalDraws(idClub: number, allMatchs: Match[], routeType: string) {
+  static totalDraws(idClub: number, allMatchs: Match[], routeType: string) {
     let draws = 0;
     allMatchs.forEach((match) => {
       if (match.homeTeam === idClub && match.homeTeamGoals === match.awayTeamGoals
@@ -66,7 +76,7 @@ export default class LeaderboardService {
     return draws;
   }
 
-  static async totalLosses(idClub: number, allMatchs: Match[], routeType: string) {
+  static totalLosses(idClub: number, allMatchs: Match[], routeType: string) {
     let losses = 0;
     allMatchs.forEach((match) => {
       if (match.homeTeam === idClub && match.homeTeamGoals < match.awayTeamGoals
@@ -81,7 +91,7 @@ export default class LeaderboardService {
     return losses;
   }
 
-  static async goalsFavor(idClub: number, allMatchs: Match[], routeType: string) {
+  static goalsFavor(idClub: number, allMatchs: Match[], routeType: string) {
     let goalsFavor = 0;
     allMatchs.forEach((match) => {
       if (match.homeTeam === idClub && (routeType === 'home' || routeType === 'home&away')) {
@@ -94,7 +104,7 @@ export default class LeaderboardService {
     return goalsFavor;
   }
 
-  static async goalsOwn(idClub: number, allMatchs: Match[], routeType: string) {
+  static goalsOwn(idClub: number, allMatchs: Match[], routeType: string) {
     let goalsOwn = 0;
     allMatchs.forEach((match) => {
       if (match.homeTeam === idClub && (routeType === 'home' || routeType === 'home&away')) {
@@ -107,7 +117,7 @@ export default class LeaderboardService {
     return goalsOwn;
   }
 
-  static async goalsBalance(idClub: number, allMatchs: Match[], routeType: string) {
+  static goalsBalance(idClub: number, allMatchs: Match[], routeType: string) {
     let goalsBalance = 0;
     allMatchs.forEach((match) => {
       if (match.homeTeam === idClub && (routeType === 'home' || routeType === 'home&away')) {
@@ -120,9 +130,9 @@ export default class LeaderboardService {
     return goalsBalance;
   }
 
-  static async efficiency(idClub: number, allMatchs: Match[], routeType: string) {
-    const points: number = await this.totalPoints(idClub, allMatchs, routeType);
-    const games: number = await this.totalGames(idClub, allMatchs, routeType);
+  static efficiency(idClub: number, allMatchs: Match[], routeType: string) {
+    const points: number = this.totalPoints(idClub, allMatchs, routeType);
+    const games: number = this.totalGames(idClub, allMatchs, routeType);
     const efficiency = ((points / (games * 3)) * 100).toFixed(2);
     return Number(efficiency);
   }
@@ -143,19 +153,19 @@ export default class LeaderboardService {
   static async buildLeaderboard(routeType: string): Promise<Leaderboard[]> {
     const allMatchs = await MatchService.findAllInProgressOrFinished(0);
     const allClubs = await ClubService.findAll();
-    const leaderboard = await Promise.all(allClubs.map(async (club) => ({
+    const leaderboard = allClubs.map((club) => ({
       name: club.clubName,
-      totalPoints: await this.totalPoints(club.id, allMatchs, routeType),
-      totalGames: await this.totalGames(club.id, allMatchs, routeType),
-      totalVictories: await this.totalVictories(club.id, allMatchs, routeType),
-      totalDraws: await this.totalDraws(club.id, allMatchs, routeType),
-      totalLosses: await this.totalLosses(club.id, allMatchs, routeType),
-      goalsFavor: await this.goalsFavor(club.id, allMatchs, routeType),
-      goalsOwn: await this.goalsOwn(club.id, allMatchs, routeType),
-      goalsBalance: await this.goalsBalance(club.id, allMatchs, routeType),
-      efficiency: await this.efficiency(club.id, allMatchs, routeType),
-    })));
-    const sortLeaderboard = await this.sortLeaderboard(leaderboard);
+      totalPoints: this.totalPoints(club.id, allMatchs, routeType),
+      totalGames: this.totalGames(club.id, allMatchs, routeType),
+      totalVictories: this.totalVictories(club.id, allMatchs, routeType),
+      totalDraws: this.totalDraws(club.id, allMatchs, routeType),
+      totalLosses: this.totalLosses(club.id, allMatchs, routeType),
+      goalsFavor: this.goalsFavor(club.id, allMatchs, routeType),
+      goalsOwn: this.goalsOwn(club.id, allMatchs, routeType),
+      goalsBalance: this.goalsBalance(club.id, allMatchs, routeType),
+      efficiency: this.efficiency(club.id, allMatchs, routeType),
+    }));
+    const sortLeaderboard = this.sortLeaderboard(leaderboard);
     return sortLeaderboard;
   }
 }

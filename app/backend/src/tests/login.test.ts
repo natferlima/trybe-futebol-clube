@@ -27,7 +27,7 @@ describe('Testa a rota post /login e get /login/validate', () => {
       role: "admin",
       email: "admin@admin.com"
     },
-    token: "123.456.789"
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInBhc3N3b3JkIjoic2VjcmV0X2FkbWluIiwiaWF0IjoxNjQ5NjM1MDk4LCJleHAiOjE2NTA0OTkwOTh9.HpnalqZu1g9vkiLEUSHMgX3FUU7tIVgTI60cNTbAHtE"
   }
 
   before(async () => {
@@ -41,9 +41,15 @@ describe('Testa a rota post /login e get /login/validate', () => {
   })
 
   it('rota POST /login responde com status 200', async () => {
-    chaiHttpResponse = await chai.request(app).post('/login');
+    chaiHttpResponse = await chai.request(app).post('/login')
+    .send({
+      email: "admin@admin.com",
+      password: "secret_admin"
+    });
 
     expect(chaiHttpResponse.status).to.be.eq(200);
+    expect(chaiHttpResponse.body).to.haveOwnProperty('token');
+    expect(chaiHttpResponse.body.user).to.be.deep.equals(userMock.user);
   });
 
   it('rota GET /login/validate responde com status 200', async () => {
